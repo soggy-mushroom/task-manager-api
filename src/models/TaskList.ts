@@ -16,7 +16,7 @@ builder.queryField("tasklists", (t) =>
   t.prismaField({
     type: ["TaskList"],
     resolve: async (query, root, args, ctx, info) => {
-      return prisma.taskList.findMany({ ...query });
+      return prisma.taskList.findMany(query);
     },
   })
 );
