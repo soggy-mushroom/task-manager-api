@@ -1,0 +1,9 @@
+query taskLists {
+  tasklists {
+    tasks {
+      title
+      completed
+    }
+    name
+  }
+}

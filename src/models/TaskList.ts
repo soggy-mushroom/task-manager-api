@@ -12,7 +12,7 @@ builder.prismaObject("TaskList", {
 })
 });
 
-builder.queryField("tasklists", (t) =>
+builder.queryField("taskLists", (t) =>
   t.prismaField({
     type: ["TaskList"],
     resolve: async (query, root, args, ctx, info) => {
