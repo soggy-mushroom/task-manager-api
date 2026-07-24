@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Prisma, TaskList, Task } from "./prisma/client.js";
+import type { Prisma, TaskList, Task } from "../src/generated/prisma/client.js";
 import type { PothosPrismaDatamodel } from "@pothos/plugin-prisma";
 export default interface PrismaTypes {
     TaskList: {
