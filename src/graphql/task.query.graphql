@@ -1,0 +1,9 @@
+query task {
+  task(id: 1) {
+    id
+    title
+    completed
+    createdAt
+    updatedAt
+  }
+}
