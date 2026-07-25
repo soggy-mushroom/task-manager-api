@@ -1,0 +1,13 @@
+mutation addTask {
+  addTask(
+    taskListId: 8
+    title: "Buy cat food"
+  ) {
+    id
+    title
+    completed
+    taskList {
+      name
+    }
+  }
+}
