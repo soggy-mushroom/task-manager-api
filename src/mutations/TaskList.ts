@@ -1,5 +1,6 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
+import { addTaskListSchema } from "../validation/TaskList";
 
 builder.mutationField("addTaskList", (t) =>
   t.prismaField({
@@ -8,10 +9,11 @@ builder.mutationField("addTaskList", (t) =>
       name: t.arg.string({ required: true }),
     },
     resolve: async (query, _root, args) => {
+      const validated = addTaskListSchema.parse(args);
       return prisma.taskList.create({
         ...query,
         data: {
-          name: args.name,
+          name: validated.name,
         },
       });
     },

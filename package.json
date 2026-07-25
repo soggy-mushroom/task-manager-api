@@ -30,6 +30,7 @@
     "graphql": "^16.10.0",
     "graphql-scalars": "^1.25.0",
     "graphql-yoga": "^5.10.4",
-    "http": "^0.0.1-security"
+    "http": "^0.0.1-security",
+    "zod": "^4.4.3"
   }
 }
