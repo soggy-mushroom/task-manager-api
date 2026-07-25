@@ -1,0 +1,6 @@
+mutation deleteTask{
+  deleteTask(id: 8) {
+    id
+    title
+  }
+}

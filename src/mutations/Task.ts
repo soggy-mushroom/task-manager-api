@@ -47,3 +47,20 @@ builder.mutationField("updateTask", (t) =>
     },
   })
 );
+
+builder.mutationField("deleteTask", (t) =>
+  t.prismaField({
+    type: "Task",
+    args: {
+      id: t.arg.int({ required: true }),
+    },
+    resolve: async (query, _root, args) => {
+      return prisma.task.delete({
+        ...query,
+        where: {
+          id: args.id,
+        },
+      });
+    },
+  })
+);
