@@ -9,5 +9,6 @@ import "./queries/Task";
 import "./queries/TaskList";
 
 import "./mutations/TaskList"
+import "./mutations/Task"
 
 export const schema = builder.toSchema({});
