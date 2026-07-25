@@ -1,0 +1,33 @@
+mutation updateTaskTitle{
+  updateTask(
+    id: 24 
+    title: "Buy cat and dog food"
+  ) {
+    id
+    title
+    completed
+  }
+}
+
+mutation updateTaskCompletion{
+  updateTask(
+    id: 24 
+    completed: true
+  ) {
+    id
+    title
+    completed
+  }
+}
+
+mutation updateTaskTitleAndCompletion{
+  updateTask(
+    id: 24 
+    title: "Buy animal food + litter"
+    completed: false
+  ) {
+    id
+    title
+    completed
+  }
+}

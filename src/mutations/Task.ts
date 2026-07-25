@@ -20,3 +20,30 @@ builder.mutationField("addTask", (t) =>
     },
   })
 );
+
+builder.mutationField("updateTask", (t) =>
+  t.prismaField({
+    type: "Task",
+    args: {
+      id: t.arg.int({ required: true }),
+      title: t.arg.string(),
+      completed: t.arg.boolean(),
+    },
+    resolve: async (query, _root, args) => {
+      return prisma.task.update({
+        ...query,
+        where: {
+          id: args.id,
+        },
+        data: {
+          ...(args.title != null && {
+            title: args.title,
+          }),
+          ...(typeof args.completed === "boolean" && {
+            completed: args.completed,
+          }),
+        },
+      });
+    },
+  })
+);
