@@ -1,5 +1,6 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
+import { taskQuerySchema, tasksQuerySchema } from "../validation/Task";
 
 builder.queryField("task", (t) =>
   t.prismaField({
@@ -8,10 +9,11 @@ builder.queryField("task", (t) =>
       id: t.arg.int({ required: true }),
     },
     resolve: async (query, __root, args) => {
+      const validated = taskQuerySchema.parse(args);
       return prisma.task.findUniqueOrThrow({
         ...query,
         where: {
-          id: args.id,
+          id: validated.id,
         },
       });
     },
@@ -28,16 +30,17 @@ builder.queryField("tasks", (t) =>
       take: t.arg.int({ defaultValue: 10 }),
     },
     resolve: async (query, _root, args) => {
+      const validated = tasksQuerySchema.parse(args);
       return prisma.task.findMany({
         ...query,
         where: {
-          taskListId: args.taskListId,
-          ...(typeof args.completed === "boolean"
-            ? { completed: args.completed }
+          taskListId: validated.taskListId,
+          ...(typeof validated.completed === "boolean"
+            ? { completed: validated.completed }
             : {}),
         },
-        skip: args.skip ?? 0,
-        take: args.take ?? 10,
+        skip: validated.skip ?? 0,
+        take: validated.take ?? 10,
         orderBy: {
           createdAt: "desc",
         },
