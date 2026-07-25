@@ -1,0 +1,43 @@
+query tasks{
+  tasks(taskListId: 1) {
+    id
+    title
+    completed
+    taskList {
+      name
+    }
+  }
+}
+
+query tasksCompleted{
+  tasks(taskListId: 3, completed: true) {
+    id
+    title
+    completed
+    taskList {
+      name
+    }
+  }
+}
+
+query tasksFirstPage{
+  tasks(taskListId: 5, skip: 0, take: 2) {
+    id
+    title
+    completed
+    taskList {
+      name
+    }
+  }
+}
+
+query tasksSecondPage{
+  tasks(taskListId: 5, skip: 2, take: 2) {
+    id
+    title
+    completed
+    taskList {
+      name
+    }
+  }
+}
