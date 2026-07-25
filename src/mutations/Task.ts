@@ -1,7 +1,7 @@
-import { builder } from "../builder";
-import { prisma } from "../db";
-import { addTaskSchema, updateTaskSchema, deleteTaskSchema } from "../validation/Task";
-import { NotFoundError } from "../errors/NotFoundError";
+import { builder } from "../builder.js";
+import { prisma } from "../db.js";
+import { addTaskSchema, updateTaskSchema, deleteTaskSchema } from "../validation/Task.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 
 builder.mutationField("addTask", (t) =>
   t.prismaField({

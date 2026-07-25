@@ -1,6 +1,6 @@
-import { builder } from "../builder";
-import { prisma } from "../db";
-import { addTaskListSchema } from "../validation/TaskList";
+import { builder } from "../builder.js";
+import { prisma } from "../db.js";
+import { addTaskListSchema } from "../validation/TaskList.js";
 
 builder.mutationField("addTaskList", (t) =>
   t.prismaField({

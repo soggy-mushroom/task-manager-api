@@ -1,7 +1,7 @@
-import { builder } from "../builder";
-import { prisma } from "../db";
-import { taskQuerySchema, tasksQuerySchema } from "../validation/Task";
-import { NotFoundError } from "../errors/NotFoundError";
+import { builder } from "../builder.js";
+import { prisma } from "../db.js";
+import { taskQuerySchema, tasksQuerySchema } from "../validation/Task.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 
 builder.queryField("task", (t) =>
   t.prismaField({

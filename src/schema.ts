@@ -1,6 +1,6 @@
 // src/schema.ts
 
-import { builder } from "./builder";
+import { builder } from "./builder.js";
 
 import "./models/Task";
 import "./models/TaskList";
