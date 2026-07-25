@@ -1,7 +1,7 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 import { addTaskSchema, updateTaskSchema, deleteTaskSchema } from "../validation/Task";
-
+import { NotFoundError } from "../errors/NotFoundError";
 
 builder.mutationField("addTask", (t) =>
   t.prismaField({
@@ -33,6 +33,16 @@ builder.mutationField("updateTask", (t) =>
     },
     resolve: async (query, _root, args) => {
       const validated = updateTaskSchema.parse(args);
+      const task = await prisma.task.findUnique({
+        where: {
+          id: validated.id,
+        },
+      });
+      
+      if (!task) {
+        throw new NotFoundError("Task");
+      }
+
       return prisma.task.update({
         ...query,
         where: {
@@ -59,6 +69,15 @@ builder.mutationField("deleteTask", (t) =>
     },
     resolve: async (query, _root, args) => {
       const validated = deleteTaskSchema.parse(args);
+      const task = await prisma.task.findUnique({
+        where: {
+          id: validated.id,
+        },
+      });
+      
+      if (!task) {
+        throw new NotFoundError("Task");
+      }
       return prisma.task.delete({
         ...query,
         where: {

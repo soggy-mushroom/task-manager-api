@@ -1,6 +1,7 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 import { taskQuerySchema, tasksQuerySchema } from "../validation/Task";
+import { NotFoundError } from "../errors/NotFoundError";
 
 builder.queryField("task", (t) =>
   t.prismaField({
@@ -8,14 +9,21 @@ builder.queryField("task", (t) =>
     args: {
       id: t.arg.int({ required: true }),
     },
+
     resolve: async (query, __root, args) => {
       const validated = taskQuerySchema.parse(args);
-      return prisma.task.findUniqueOrThrow({
+      const task = await prisma.task.findUnique({
         ...query,
         where: {
           id: validated.id,
         },
       });
+
+      if (!task) {
+        throw new NotFoundError("Task");
+      }
+
+      return task;
     },
   })
 );
