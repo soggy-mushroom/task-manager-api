@@ -1,0 +1,6 @@
+mutation addTaskList {
+  addTaskList (name: "Cat") {
+    id
+    name
+  }
+}
