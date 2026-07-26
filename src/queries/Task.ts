@@ -2,6 +2,7 @@ import { builder } from "../builder.js";
 import { prisma } from "../db.js";
 import { taskQuerySchema, tasksQuerySchema } from "../validation/Task.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
+import z from "zod";
 
 builder.queryField("task", (t) =>
   t.prismaField({
@@ -28,6 +29,28 @@ builder.queryField("task", (t) =>
   })
 );
 
+export async function getTasks(
+  query: object,
+  args: z.infer<typeof tasksQuerySchema>,
+) {
+  const validated = tasksQuerySchema.parse(args);
+
+  return prisma.task.findMany({
+    ...query,
+    where: {
+      taskListId: validated.taskListId,
+      ...(typeof validated.completed === "boolean"
+        ? { completed: validated.completed }
+        : {}),
+    },
+    skip: validated.skip ?? 0,
+    take: validated.take ?? 10,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
+
 builder.queryField("tasks", (t) =>
   t.prismaField({
     type: ["Task"],
@@ -37,22 +60,6 @@ builder.queryField("tasks", (t) =>
       skip: t.arg.int({ defaultValue: 0 }),
       take: t.arg.int({ defaultValue: 10 }),
     },
-    resolve: async (query, _root, args) => {
-      const validated = tasksQuerySchema.parse(args);
-      return prisma.task.findMany({
-        ...query,
-        where: {
-          taskListId: validated.taskListId,
-          ...(typeof validated.completed === "boolean"
-            ? { completed: validated.completed }
-            : {}),
-        },
-        skip: validated.skip ?? 0,
-        take: validated.take ?? 10,
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    },
+    resolve: (query, _root, args) => getTasks(query, args),
   })
 );
