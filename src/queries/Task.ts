@@ -29,7 +29,7 @@ builder.queryField("task", (t) =>
   })
 );
 
-export async function getTasks(
+export async function getTasksResolver(
   query: object,
   args: z.infer<typeof tasksQuerySchema>,
 ) {
@@ -60,6 +60,6 @@ builder.queryField("tasks", (t) =>
       skip: t.arg.int({ defaultValue: 0 }),
       take: t.arg.int({ defaultValue: 10 }),
     },
-    resolve: (query, _root, args) => getTasks(query, args),
+    resolve: (query, _root, args) => getTasksResolver(query, args),
   })
 );

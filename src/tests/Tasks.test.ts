@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "../db.js";
-import { getTasks } from "../queries/Task.js";
+import { getTasksResolver } from "../queries/Task.js";
 import { addTaskResolver } from "../mutations/Task.js";
 import { ZodError } from "zod";
 
@@ -26,7 +26,7 @@ describe("Tasks operations", () => {
         .spyOn(prisma.task, "findMany")
         .mockResolvedValue(mockTasks as never);
 
-      const result = await getTasks({}, {
+      const result = await getTasksResolver({}, {
         taskListId: 1,
         skip: 0,
         take: 10,
