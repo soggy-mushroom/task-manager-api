@@ -2,6 +2,22 @@ import { builder } from "../builder.js";
 import { prisma } from "../db.js";
 import { addTaskSchema, updateTaskSchema, deleteTaskSchema } from "../validation/Task.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
+import z from "zod";
+
+export async function addTaskResolver(
+  query: object,
+  args: z.infer<typeof addTaskSchema>,
+) {
+  const validated = addTaskSchema.parse(args);
+
+  return prisma.task.create({
+    ...query,
+    data: {
+      title: validated.title,
+      taskListId: validated.taskListId,
+    },
+  });
+}
 
 builder.mutationField("addTask", (t) =>
   t.prismaField({
@@ -10,17 +26,8 @@ builder.mutationField("addTask", (t) =>
       taskListId: t.arg.int({ required: true }),
       title: t.arg.string({ required: true }),
     },
-    resolve: async (query, _root, args) => {
-      const validated = addTaskSchema.parse(args);
-      return prisma.task.create({
-        ...query,
-        data: {
-          title: validated.title,
-          taskListId: validated.taskListId,
-        },
-      });
-    },
-  })
+    resolve: (query, _root, args) => addTaskResolver(query, args),
+  }),
 );
 
 builder.mutationField("updateTask", (t) =>
